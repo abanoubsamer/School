@@ -1,0 +1,63 @@
+﻿@model IEnumerable<School.Models.Student>
+
+
+<div class="container">
+    
+
+    <div class="row mb-3">
+            <div class="col-md-12">
+       
+                <h1>Student Views</h1>
+    
+        </div>
+        <div class="col-md-12 text-lg-end">
+            <a asp-controller="Student" asp-action="New" class="btn btn-primary" style="border-radius: 10px;">
+                <i class="bi bi-plus-circle"></i> &nbsp; Add New Item
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered  " id="myTable" style="width:100%">
+                <thead>
+                    <tr>
+
+                        <th class="text-center">@Html.DisplayNameFor(Model => Model.FirstName)</th>
+                        <th class="text-center">@Html.DisplayNameFor(Model => Model.LastName)</th>
+                        <th class ="text-center">@Html.DisplayNameFor(Model => Model.StartDate)</th>
+                      
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    @foreach (var Student in Model)
+                    {
+                        <tr>
+
+                            <td class="text-center">@Student.FirstName</td>
+                            <td class="text-center">@Student.LastName</td>
+                            <td class="text-center">@Student.StartDate?.ToString("dd/MMMM/yyyy")</td>
+                        
+                           
+                        
+
+                            <td class="text-center">
+                                <a asp-controller="Student" asp-action="Edite" asp-route-id="@Student.StudentId" class="btn btn-success" style="border-radius: 10px;">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                                <a asp-controller="Student" asp-action="Details" asp-route-id="@Student.StudentId" class="btn btn-secondary" style="border-radius: 10px;">
+                                    <i class="bi bi-search"></i>
+                                </a>
+                                <a asp-controller="Student" asp-action="Delete" asp-route-id="@Student.StudentId" class="btn btn-danger" style="border-radius: 10px;">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                              
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,237 @@
+﻿@model IEnumerable<School.Models.Course>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        @Html.Partial("_Notification")
+        <h1>Course Views</h1>
+    </div>
+    <div class="col-md-10">
+        <a id="delete" class="btn btn-danger btn-sm" style="border-radius: 10px; display: none;" onclick="DeleteMulti()">
+            <i class="bi bi-trash"></i> &nbsp; Delete All Selected Courses
+        </a>
+    </div>
+
+    <div class=" col-md-2">
+        <a asp-controller="Courses" asp-action="Create" class="btn btn-primary" style="border-radius: 10px;">
+            <i class="bi bi-plus-circle"></i> &nbsp; Add New Course
+        </a>
+     
+    </div>
+   
+    
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table id="myTable" class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        All <input type="checkbox" id="Parent" class="custom-checkbox" />
+                    </th>
+
+                    <th class="text-center">@Html.DisplayNameFor(model => model.Tital)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.Credits)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.LevelId)</th>
+                    <th class="text-center">@Html.DisplayNameFor(model => model.IsCourseActive)</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">
+                            <input type="checkbox" name="id" value="@item.CourseId" data-course-id="@item.CourseId" class="custom-checkbox child" />
+                        </td>
+                        <td class="text-center">@Html.DisplayFor(modelItem => item.Tital)</td>
+                        <td class="text-center">@Html.DisplayFor(modelItem => item.Credits)</td>
+                        <td class="text-center">@Html.DisplayFor(modelItem => item.CourseLevel.Level)</td>
+                        <td class="text-center">@Html.DisplayFor(modelItem => item.IsCourseActive)</td>
+                        <td class="text-center">
+                            <a asp-controller="Courses" asp-action="Edit" asp-route-id="@item.CourseId" class="btn btn-success" style="border-radius: 10px;">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.CourseId" class="btn btn-secondary" style="border-radius: 10px;">
+                                <i class="bi bi-search"></i>
+                            </a>
+                            <a data-model-id="@item.CourseId" class="btn btn-danger" style="border-radius: 10px;" onclick="Delete(this)">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.AntiForgeryToken()
+    </div>
+</div>
+
+<script src="/js/CheckBox.js"></script>
+
+<script>
+    function Delete(element) {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var courseId = element.getAttribute('data-model-id');
+                var token = $('input[name="__RequestVerificationToken"]').val();
+          
+                $.ajax({
+                    url: "/Courses/DeleteAjax",
+                    type: 'POST',
+                    data: {
+                        id: courseId,
+                        __RequestVerificationToken: token
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            swalWithBootstrapButtons.fire(
+                                'Deleted!',
+                                'The course has been deleted.',
+                                'success'
+                            );
+                            $(element).closest('tr').remove();
+                        } else {
+                            swalWithBootstrapButtons.fire(
+                                'Error!',
+                                response.message,
+                                'error'
+                            );
+                            toastr.error("Error");
+                        }
+                        toastr.success("success remove");
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX error response:', xhr, status, error);
+                        swalWithBootstrapButtons.fire(
+                            'Error!',
+                            'An error occurred while deleting the course.',
+                            'error'
+                        );
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your course is safe :)',
+                    'error'
+                );
+            }
+        });
+    }
+    function DeleteMulti() {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var courseIds = []; // Array to store CourseIds
+
+                // Loop through checked checkboxes and collect CourseIds
+                $(".child:checked").each(function () {
+                    courseIds.push($(this).data("course-id"));
+                });
+
+                if (courseIds.length === 0) {
+                    swalWithBootstrapButtons.fire(
+                        'Error!',
+                        'Please select at least one course to delete.',
+                        'error'
+                    );
+                    return;
+                }
+
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    url: "/Courses/DeleteMultiAjax",
+                    type: 'POST',
+                    data: {
+                        ids: courseIds,
+                        __RequestVerificationToken: token
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            swalWithBootstrapButtons.fire(
+                                'Deleted!',
+                                'The courses have been deleted.',
+                                'success'
+                            );
+                            // Remove rows from the table based on checked checkboxes
+                            $(".child:checked").closest('tr').remove();
+                        } else {
+                            swalWithBootstrapButtons.fire(
+                                'Error!',
+                                response.message,
+                                'error'
+                            );
+                            toastr.error("Error");
+                        }
+                        toastr.success("Successfully removed courses.");
+                        $("#delete").css("display", "none"); // Hide #delete element
+                        $("#Parent").prop("checked", false);
+                    },
+                    error: function (xhr, status, error) {
+                        swalWithBootstrapButtons.fire(
+                            'Error!',
+                            'An error occurred while deleting the courses.',
+                            'error'
+                        );
+                        toastr.error("Error removed courses.");
+                        $("#delete").css("display", "none"); // Hide #delete element
+                        $("#Parent").prop("checked", false);
+                        $(".child").prop("checked", false);
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your courses are safe :)',
+                    'error'
+                );
+                toastr.error("Error removed courses.");
+                $("#delete").css("display", "none"); // Hide #delete element
+                $(".child").prop("checked", false);
+                $("#Parent").prop("checked", false);
+            }
+        });
+    }
+
+
+
+
+
+</script>

@@ -1,0 +1,75 @@
+﻿@model School.Models.Student
+
+
+<form method="post" enctype="multipart/form-data">
+
+
+    @Html.AntiForgeryToken()
+
+
+    <div class=" border p-3 mt-4">
+
+
+        <div class=" row p-2 ">
+            <h2 class=" text-primary">
+                Add New Item
+            </h2>
+            <hr />
+            <div asp-validation-summary="All"></div>
+
+            <div class=" mb-3 ">
+
+
+
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" required />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class=" mb-3 ">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" required />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class=" mb-3 ">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" required />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class=" mb-3 ">
+
+                <label asp-for="StartDate"></label>
+                <input asp-for="StartDate" type="text" class="form-control datepicker" required />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImagePath"></label>
+                <div id="dropArea" class="drop-area">
+                    <span class="drop-text">Drag and drop your image here or click to select</span>
+                </div>
+
+                <!-- Hidden file input for ImagePath -->
+                <input asp-for="ImagePath" type="file" id="ImagePath" class="form-control" style="display: none;" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
+            </div>
+
+
+
+
+            <br />
+            <hr />
+            <div class=" mb-3 ">
+                <button type="submit" id="submit" class="btn btn-success" style="border-radius: 10px; width:250px;">
+                    <i class="bi bi-plus-circle"></i> &nbsp; Add New Item
+                </button>
+
+                <a asp-action="Index" asp-controller="Student" class=" btn btn-primary" style="border-radius: 10px; width:250px;">
+                    <i class="bi bi-skip-backward-circle-fill"></i>&nbsp; Back To Item
+                </a>
+            </div>
+
+
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,7 @@
+﻿@model Student
+
+<form method="post" action="@Url.Action("Delete", "Students")">
+    <input type="hidden" asp-for="StudentId" />
+    <button type="submit">Delete Student</button>
+    @Html.AntiForgeryToken()
+</form>

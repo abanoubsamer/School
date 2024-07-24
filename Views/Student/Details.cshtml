@@ -1,0 +1,63 @@
+﻿@model School.Models.Student
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<div>
+    <h4>Student Details</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.StartDate)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.PhoneNumber)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+            <div class="card" style="width: 12rem;">
+                <img class="card-img-top" src="/@Model.ImagePath" alt="Card image cap">
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<table class="table table-bordered  " id="myTable" style="width:100%">
+    <thead>
+        <tr>
+            <th>Course Title</th>
+            <th>Credits</th>
+            <th>Level</th>
+            <th>Grade</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Enrollments)
+        {
+            <partial name="_CourseSum" model="item" />
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Edite" asp-route-id="@Model.StudentId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

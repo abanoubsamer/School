@@ -1,0 +1,13 @@
+﻿@model School.Models.Enrollment
+
+<tr>
+    <td>@Model.Course.Tital</td>
+    <td>@Model.Course.Credits</td>
+    <td>@Model.Course.CourseLevel.Level</td>
+    <td>@Model.Grade</td>
+    <td>
+        <a asp-controller="Enrollments" asp-action="Edit" asp-route-id="@Model.EnrollmentId">Edit</a> |
+        <a asp-controller="Enrollments" asp-action="Details" asp-route-id="@Model.EnrollmentId">Details</a> |
+        <a asp-controller="Enrollments" asp-action="Delete" asp-route-id="@Model.EnrollmentId">Delete</a>
+    </td>
+</tr>

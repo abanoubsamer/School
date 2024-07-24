@@ -1,0 +1,81 @@
+﻿<style>
+    .shadow-on-hover:hover {
+        background-color: #343a40;
+    }
+    /* ============ desktop view ============ */
+    @@media all and (min-width: 992px) {
+	    .navbar .nav-item .dropdown-menu{ display: none; }
+	    .navbar .nav-item:hover .dropdown-menu{ display: block; }
+	    .navbar .nav-item .dropdown-menu{ margin-top:0; }
+    }	
+    /* ============ desktop view .end// ============ */
+
+
+    @@media all and (min-width:991px) {  
+	    .dropdown:after{
+			    content: ''; 
+		        top: 0;
+		        right: 0;
+		        bottom: 0;
+		        left: 0;
+		        transition: opacity .15s ease-in-out;
+		        opacity: 0;
+		        visibility:hidden;
+		        background-color: rgba(0,0,0,.5);
+		        pointer-events: none;
+		    }
+
+	    .dropdown:hover .nav-link{
+			    position:relative;
+			    z-index:12;
+		    }
+
+	    .dropdown:hover:after{
+			    z-index:10; opacity:1; 
+			    visibility:visible;
+			    position: fixed;
+	    }
+    }
+    
+</style>
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">School</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-area="" asp-controller="Student" asp-action="Index">Student</a>
+                </li>
+                
+                
+             
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Managament
+                    </a>
+                    <ul class="dropdown-menu bg-dark">
+                        <li> <a class="nav-link text-light shadow-on-hover " asp-area="" asp-controller="Courses" asp-action="Index">Courses</a></li>
+                        <li>  <a class="nav-link text-light  shadow-on-hover" asp-area="" asp-controller="Enrollments" asp-action="Index">Enrollments</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li> <a class="nav-link text-light  shadow-on-hover " asp-area="" asp-controller="CourseLevel" asp-action="Index">CourseLevel</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            @Html.Partial("_Search")
+
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+</nav>

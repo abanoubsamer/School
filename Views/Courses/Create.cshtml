@@ -1,0 +1,38 @@
+﻿@model School.Models.Course
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">MainData</a></li>
+        <li><a href="#tabs-2">OtherData</a></li>
+        <li><a href="#tabs-3">Aenean lacinia</a></li>
+    </ul>
+    <div id="tabs-1">
+        <partial name="~/Views/Courses/Partial/MainData.cshtml" model="Model" />
+    </div>
+
+    <div id="tabs-2">
+      
+    </div>
+    <div id="tabs-3">
+
+        <div class="form-group">
+            <label asp-for="CourseDesc" class="control-label"></label>
+            <textarea asp-for="CourseDesc" rows="5" cols="80"></textarea>
+            <span asp-validation-for="CourseDesc" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
